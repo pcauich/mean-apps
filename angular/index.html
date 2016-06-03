@@ -1,0 +1,79 @@
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="MainApp">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Oficios</title>
+	<!-- Cargamos bootstrap -->
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<!-- Cargamos angular -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+	<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.3.3.min.js"></script>
+	<!-- Cargamos el javascript de angular -->
+	<script src="core.js"></script>
+
+</head>
+<body ng-controller="mainController">
+	<div class="container">
+		<div align="center"><p class="text-info">Fecha actual: <span  id ="fecha">{{fechaActual | date:'dd-MM-yyyy'}}</span></p></div>
+		<div class="jumbotron text-center" ng-prueba>
+			<h2>Nº de Registros: <span class="label label-success">{{ oficios.length }}</span></h2>
+			<h2>N° Memo actual: <span class="label label-warning">{{memo_actual}}</span><a ng-click ="open()"><span class="glyphicon glyphicon-edit"></span></a></h2>
+		</div>
+		<div class="row">
+			<div class="col-sm-6 col-sm-offset-1">
+				<table class="table table-striped">
+					<tr class="info">
+						<td>Numero Memo</td>
+						<td>Destinatario</td>
+						<td>Asunto</td>
+						<td>Fecha</td>
+					</tr>
+					<tr ng-repeat="oficio in oficios" ng-click="selectOficio(oficio)">
+						<td>{{ oficio.numero_memo }}</td>
+						<td>{{ oficio.destinatario }}</td>
+						<td>{{ oficio.asunto }}</td>
+						<td>{{ oficio.fecha | date:'dd/MM/yyyy':'UTC' }}</td>
+					</tr>
+				</table>					
+			</div>
+			<div class="col-sm-4 col-sm-offset-1 text-center">
+				<form name="myForm">
+					<div class="form-group">
+						<input type="number" class="form-control input-lg text-center" placeholder="Numero Memo" ng-model="newOficio.numero_memo" ng-value="memoActualInc" readonly required>
+						<br>
+						<input type="text" class="form-control input-lg text-center" placeholder="Destinatario" ng-model="newOficio.destinatario" required>
+						<br>
+						<input type="text" class="form-control input-lg text-center" placeholder="Asunto" ng-model="newOficio.asunto" required>
+						<br>
+						<input type="date" class="form-control input-lg text-center" placeholder="Fecha" ng-model="fechaOficio" min="{{fechaMin | date:'yyyy-MM-dd'}}" max="{{fechaMax | date:'yyyy-MM-dd'}}"required>
+					</div>
+
+					<!-- Acciones que podemos realizar en el formulario -->
+					<button type="submit" class="btn btn-success btn-lg" ng-click="registrarOficio()" ng-disabled="myForm.$invalid || selected">Registrar</button>
+					<button type="submit" class="btn btn-warning btn-lg" ng-click="modificarOficio(newOficio)" ng-disabled="!newOficio.numero_memo || !newOficio.destinatario || !newOficio.asunto || !newOficio.fecha || !selected">Modificar</button>
+					<button type="submit" class="btn btn-danger btn-lg" ng-click="borrarOficio(newOficio)" ng-disabled="!newOficio.numero_memo || !newOficio.destinatario || !newOficio.asunto || !newOficio.fecha || !selected">Borrar</button>
+					<button type="submit" class="btn btn-info btn-lg" ng-click="limpiarForm()" ng-disabled="!newOficio.numero_memo || !newOficio.destinatario || !newOficio.asunto || !newOficio.fecha || !selected">Limpiar</button>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/ng-template" id="myModalContent.html">
+		<div class="modal-header">
+			<h3>Establecer numero de Memo</h3>
+		</div>
+		<form ng-submit="submit()">
+			<div class="modal-body">
+				<label>Valor de memo</label>
+				<input type="number" ng-model="memoActualInc" />
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+				<input type="submit" class="btn primary-btn" value="Submit" />
+			</div>
+		</form>
+	</script>
+</body>
+</html>

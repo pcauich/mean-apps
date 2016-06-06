@@ -108,7 +108,7 @@ function mainController($scope, $http, $uibModal, $log) {
 	};
 
 	function setMemo(val){
-		debugger;
+		//debugger;
 		$scope.newOficio.numero_memo = val;
 		$scope.memo_actual = val;
 		console.log("nuevo memo",val);
